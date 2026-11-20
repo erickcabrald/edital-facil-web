@@ -30,7 +30,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <ThemeProvider>
-      <div className="min-h-dvh bg-gradient-to-b from-background via-background to-primary/5">
+      <div className="min-h-dvh bg-linear-to-b from-background via-background to-primary/5">
         <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-md print:hidden">
           <div className="container mx-auto flex h-16 items-center justify-between px-4">
             <div className="flex items-center gap-2.5">

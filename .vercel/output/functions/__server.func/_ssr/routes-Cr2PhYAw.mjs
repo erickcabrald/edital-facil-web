@@ -1,14 +1,14 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].mjs";
 import { n as require_jsx_runtime } from "../_libs/radix-ui__react-context+react.mjs";
-import { n as Slot } from "../_libs/@radix-ui/react-primitive+[...].mjs";
 import { _ as CircleCheck, a as RotateCcw, c as MapPin, d as FileText, f as FileDown, g as CircleX, h as CloudUpload, i as Sparkles, l as Mail, m as Copy, n as TriangleAlert, o as Phone, p as Download, r as Sun, s as Moon, t as Upload, u as Info, v as CalendarDays } from "../_libs/lucide-react.mjs";
+import { n as Slot } from "../_libs/@radix-ui/react-primitive+[...].mjs";
 import { n as toast, t as Toaster } from "../_libs/sonner.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { n as Root, t as Indicator } from "../_libs/radix-ui__react-progress.mjs";
 import { t as axios } from "../_libs/axios+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-DvORFn3c.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-Cr2PhYAw.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var Toaster$1 = ({ ...props }) => {
@@ -176,7 +176,7 @@ function formatBytes(bytes) {
 function PlainText({ children, className = "" }) {
 	if (children == null || children === "") return null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-		className: `whitespace-pre-wrap break-words ${className}`,
+		className: `whitespace-pre-wrap wrap-break-word ${className}`,
 		children
 	});
 }
@@ -251,7 +251,7 @@ function Timeline({ items }) {
 				className: "relative",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "absolute -left-[31px] top-1 grid h-5 w-5 place-items-center rounded-full bg-primary text-primary-foreground text-[10px] font-semibold",
+						className: "absolute -left-7.75 top-1 grid h-5 w-5 place-items-center rounded-full bg-primary text-primary-foreground text-[10px] font-semibold",
 						children: i + 1
 					}),
 					it.nome && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -790,7 +790,7 @@ function EditalApp() {
 }
 function Index() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ThemeProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "min-h-dvh bg-gradient-to-b from-background via-background to-primary/5",
+		className: "min-h-dvh bg-linear-to-b from-background via-background to-primary/5",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
 				className: "sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-md print:hidden",

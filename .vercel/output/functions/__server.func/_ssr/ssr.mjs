@@ -4216,7 +4216,7 @@ var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 * the dev styles URL for route-scoped CSS collection.
 */
 async function getStartManifest(matchedRoutes) {
-	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-CbbBQ4JF.mjs");
+	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-BQutaRfs.mjs");
 	const startManifest = tsrStartManifest();
 	let routes = startManifest.routes;
 	routes[rootRouteId];
@@ -6754,7 +6754,7 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
 	const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-		import("./router-COeDtl-B.mjs"),
+		import("./router-D-mqE9ur.mjs"),
 		import("./start-DVyA7pKJ.mjs"),
 		import("./empty-plugin-adapters-Cl0aE3W_.mjs")
 	]);
@@ -7371,20 +7371,17 @@ async function normalizeCatastrophicSsrResponse(response) {
 	if (response.status < 500) return response;
 	if (!(response.headers.get("content-type") ?? "").includes("application/json")) return response;
 	const body = await response.clone().text();
-	if (!isH3SwallowedErrorBody(body)) return response;
+	try {
+		const payload = JSON.parse(body);
+		if (payload.unhandled !== true || payload.message !== "HTTPError") return response;
+	} catch {
+		return response;
+	}
 	console.error(consumeLastCapturedError() ?? /* @__PURE__ */ new Error(`h3 swallowed SSR error: ${body}`));
 	return new Response(renderErrorPage(), {
 		status: 500,
 		headers: { "content-type": "text/html; charset=utf-8" }
 	});
-}
-function isH3SwallowedErrorBody(body) {
-	try {
-		const payload = JSON.parse(body);
-		return payload.unhandled === true && payload.message === "HTTPError";
-	} catch {
-		return false;
-	}
 }
 var server_default = createServerEntry({ async fetch(request, opts) {
 	try {

@@ -31,9 +31,19 @@ type Status = "idle" | "loading" | "success" | "error";
 const PT = "pt-BR";
 
 // Preserva quebras de linha/espacamento originais, sem interpretar Markdown.
-function PlainText({ children, className = "" }: { children?: React.ReactNode; className?: string }) {
+function PlainText({
+  children,
+  className = "",
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) {
   if (children == null || children === "") return null;
-  return <span className={`whitespace-pre-wrap break-words ${className}`}>{children}</span>;
+  return (
+    <span className={`whitespace-pre-wrap wrap-break-word ${className}`}>
+      {children}
+    </span>
+  );
 }
 
 function Section({
@@ -56,14 +66,21 @@ function Section({
         ? "border-destructive/30 bg-destructive/5"
         : "";
   return (
-    <Card id={id} className={`scroll-mt-24 transition-shadow hover:shadow-md ${toneCls}`}>
+    <Card
+      id={id}
+      className={`scroll-mt-24 transition-shadow hover:shadow-md ${toneCls}`}
+    >
       <CardHeader className="flex flex-row items-center gap-3 space-y-0">
         <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
           <Icon className="h-5 w-5" />
         </div>
-        <CardTitle className="text-lg font-semibold tracking-tight">{title}</CardTitle>
+        <CardTitle className="text-lg font-semibold tracking-tight">
+          {title}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="text-sm text-foreground/90">{children}</CardContent>
+      <CardContent className="text-sm text-foreground/90">
+        {children}
+      </CardContent>
     </Card>
   );
 }
@@ -72,14 +89,23 @@ function InfoRow({ label, value }: { label: string; value?: React.ReactNode }) {
   if (!value) return null;
   return (
     <div className="grid grid-cols-[minmax(0,140px)_minmax(0,1fr)] gap-3 py-2 border-b border-border/60 last:border-0">
-      <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</div>
-      <div className="text-sm"><PlainText>{value}</PlainText></div>
+      <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        {label}
+      </div>
+      <div className="text-sm">
+        <PlainText>{value}</PlainText>
+      </div>
     </div>
   );
 }
 
 function BulletList({ items }: { items?: (string | undefined)[] }) {
-  if (!items?.length) return <p className="text-sm text-muted-foreground">Nenhuma informação disponível.</p>;
+  if (!items?.length)
+    return (
+      <p className="text-sm text-muted-foreground">
+        Nenhuma informação disponível.
+      </p>
+    );
   return (
     <ul className="space-y-2">
       {items.filter(Boolean).map((it, i) => (
@@ -93,11 +119,19 @@ function BulletList({ items }: { items?: (string | undefined)[] }) {
 }
 
 function DangerList({ items }: { items?: string[] }) {
-  if (!items?.length) return <p className="text-sm text-muted-foreground">Nenhuma informação disponível.</p>;
+  if (!items?.length)
+    return (
+      <p className="text-sm text-muted-foreground">
+        Nenhuma informação disponível.
+      </p>
+    );
   return (
     <ul className="space-y-2">
       {items.map((it, i) => (
-        <li key={i} className="flex gap-2 rounded-md border border-destructive/20 bg-destructive/5 p-2">
+        <li
+          key={i}
+          className="flex gap-2 rounded-md border border-destructive/20 bg-destructive/5 p-2"
+        >
           <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
           <PlainText>{it}</PlainText>
         </li>
@@ -111,22 +145,33 @@ function Timeline({
 }: {
   items?: Array<{ nome?: string; data?: string; descricao?: string } | string>;
 }) {
-  if (!items?.length) return <p className="text-sm text-muted-foreground">Nenhuma etapa informada.</p>;
+  if (!items?.length)
+    return (
+      <p className="text-sm text-muted-foreground">Nenhuma etapa informada.</p>
+    );
   return (
     <ol className="relative ml-3 space-y-5 border-l border-border pl-6">
       {items.map((raw, i) => {
         const it = typeof raw === "string" ? { descricao: raw } : raw;
         return (
           <li key={i} className="relative">
-            <span className="absolute -left-[31px] top-1 grid h-5 w-5 place-items-center rounded-full bg-primary text-primary-foreground text-[10px] font-semibold">
+            <span className="absolute -left-7.75 top-1 grid h-5 w-5 place-items-center rounded-full bg-primary text-primary-foreground text-[10px] font-semibold">
               {i + 1}
             </span>
-            {it.nome && <div className="text-sm font-semibold"><PlainText>{it.nome}</PlainText></div>}
+            {it.nome && (
+              <div className="text-sm font-semibold">
+                <PlainText>{it.nome}</PlainText>
+              </div>
+            )}
             {it.data && (
-              <div className="text-xs font-medium text-primary"><PlainText>{it.data}</PlainText></div>
+              <div className="text-xs font-medium text-primary">
+                <PlainText>{it.data}</PlainText>
+              </div>
             )}
             {it.descricao && (
-              <div className="mt-1 text-sm text-muted-foreground"><PlainText>{it.descricao}</PlainText></div>
+              <div className="mt-1 text-sm text-muted-foreground">
+                <PlainText>{it.descricao}</PlainText>
+              </div>
             )}
           </li>
         );
@@ -188,13 +233,27 @@ function ResultView({
             <FileText className="h-3.5 w-3.5" />
             {file?.name ?? "edital.pdf"}
           </Badge>
-          <Badge variant="outline" className="rounded-full py-1">Análise concluída</Badge>
+          <Badge variant="outline" className="rounded-full py-1">
+            Análise concluída
+          </Badge>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" size="sm" onClick={copyAll}><Copy className="h-4 w-4" />Copiar</Button>
-          <Button variant="outline" size="sm" onClick={downloadJson}><Download className="h-4 w-4" />JSON</Button>
-          <Button variant="outline" size="sm" onClick={downloadPdf}><FileDown className="h-4 w-4" />PDF</Button>
-          <Button size="sm" onClick={onReset}><RotateCcw className="h-4 w-4" />Analisar outro edital</Button>
+          <Button variant="outline" size="sm" onClick={copyAll}>
+            <Copy className="h-4 w-4" />
+            Copiar
+          </Button>
+          <Button variant="outline" size="sm" onClick={downloadJson}>
+            <Download className="h-4 w-4" />
+            JSON
+          </Button>
+          <Button variant="outline" size="sm" onClick={downloadPdf}>
+            <FileDown className="h-4 w-4" />
+            PDF
+          </Button>
+          <Button size="sm" onClick={onReset}>
+            <RotateCcw className="h-4 w-4" />
+            Analisar outro edital
+          </Button>
         </div>
       </div>
 
@@ -248,14 +307,22 @@ function ResultView({
             <InfoRow label="Isenção" value={data.inscricoes.isencao} />
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">Nenhuma informação de inscrição disponível.</p>
+          <p className="text-sm text-muted-foreground">
+            Nenhuma informação de inscrição disponível.
+          </p>
         )}
       </Section>
 
-      <Section id="participantes" icon={CheckCircle2} title="Quem pode participar">
+      <Section
+        id="participantes"
+        icon={CheckCircle2}
+        title="Quem pode participar"
+      >
         <InfoRow label="Público-alvo" value={data.publicoAlvo} />
         <div className="pt-2">
-          <div className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">Requisitos</div>
+          <div className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            Requisitos
+          </div>
           <BulletList items={data.requisitos} />
         </div>
       </Section>
@@ -268,13 +335,18 @@ function ResultView({
         {data.cotas?.length ? (
           <div className="grid gap-2 sm:grid-cols-2">
             {data.cotas.map((c, i) => (
-              <div key={i} className="rounded-lg border bg-primary/5 p-3 text-sm">
+              <div
+                key={i}
+                className="rounded-lg border bg-primary/5 p-3 text-sm"
+              >
                 <PlainText>{c}</PlainText>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">Nenhuma cota informada.</p>
+          <p className="text-sm text-muted-foreground">
+            Nenhuma cota informada.
+          </p>
         )}
       </Section>
 
@@ -284,22 +356,31 @@ function ResultView({
 
       <Section id="datas" icon={CalendarDays} title="Datas importantes">
         <Timeline
-  items={data.datasImportantes?.map((d) =>
-    typeof d === "string"
-      ? { descricao: d }
-      : {
-          data: d.data,
-          descricao: d.evento,
-        },
-  )}
-/>
+          items={data.datasImportantes?.map((d) =>
+            typeof d === "string"
+              ? { descricao: d }
+              : {
+                  data: d.data,
+                  descricao: d.evento,
+                },
+          )}
+        />
       </Section>
 
-      <Section id="classificacao" icon={CheckCircle2} title="Critérios de classificação">
+      <Section
+        id="classificacao"
+        icon={CheckCircle2}
+        title="Critérios de classificação"
+      >
         <BulletList items={data.criteriosClassificacao} />
       </Section>
 
-      <Section id="eliminacao" icon={XCircle} title="Motivos de eliminação" tone="danger">
+      <Section
+        id="eliminacao"
+        icon={XCircle}
+        title="Motivos de eliminação"
+        tone="danger"
+      >
         <DangerList items={data.motivosEliminacao} />
       </Section>
 
@@ -307,27 +388,48 @@ function ResultView({
         {data.contato ? (
           <div className="grid gap-3 sm:grid-cols-3">
             {data.contato.email && (
-              <a href={`mailto:${data.contato.email}`} className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-accent">
-                <Mail className="h-4 w-4 text-primary" /> <PlainText>{data.contato.email}</PlainText>
+              <a
+                href={`mailto:${data.contato.email}`}
+                className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-accent"
+              >
+                <Mail className="h-4 w-4 text-primary" />{" "}
+                <PlainText>{data.contato.email}</PlainText>
               </a>
             )}
             {data.contato.telefone && (
-              <a href={`tel:${data.contato.telefone}`} className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-accent">
-                <Phone className="h-4 w-4 text-primary" /> <PlainText>{data.contato.telefone}</PlainText>
+              <a
+                href={`tel:${data.contato.telefone}`}
+                className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-accent"
+              >
+                <Phone className="h-4 w-4 text-primary" />{" "}
+                <PlainText>{data.contato.telefone}</PlainText>
               </a>
             )}
             {data.contato.site && (
-              <a href={data.contato.site} target="_blank" rel="noreferrer" className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-accent">
-                <MapPin className="h-4 w-4 text-primary" /> <span className="truncate">{data.contato.site}</span>
+              <a
+                href={data.contato.site}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-accent"
+              >
+                <MapPin className="h-4 w-4 text-primary" />{" "}
+                <span className="truncate">{data.contato.site}</span>
               </a>
             )}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">Nenhum contato disponível.</p>
+          <p className="text-sm text-muted-foreground">
+            Nenhum contato disponível.
+          </p>
         )}
       </Section>
 
-      <Section id="observacoes" icon={AlertTriangle} title="Observações importantes" tone="warning">
+      <Section
+        id="observacoes"
+        icon={AlertTriangle}
+        title="Observações importantes"
+        tone="warning"
+      >
         {data.observacoesImportantes?.length ? (
           <ul className="space-y-2">
             {data.observacoesImportantes.map((o, i) => (
@@ -390,14 +492,27 @@ function UploadCard({
             <UploadCloud className="h-7 w-7" />
           </div>
           <div>
-            <div className="text-base font-semibold">Arraste o PDF do edital para cá</div>
-            <div className="mt-1 text-sm text-muted-foreground">ou clique para escolher um arquivo do seu dispositivo</div>
+            <div className="text-base font-semibold">
+              Arraste o PDF do edital para cá
+            </div>
+            <div className="mt-1 text-sm text-muted-foreground">
+              ou clique para escolher um arquivo do seu dispositivo
+            </div>
           </div>
-          <Button type="button" className="mt-2" onClick={(e) => { e.stopPropagation(); pick(); }}>
+          <Button
+            type="button"
+            className="mt-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              pick();
+            }}
+          >
             <Upload className="h-4 w-4" />
             Selecionar Edital
           </Button>
-          <p className="text-xs text-muted-foreground">Apenas arquivos PDF · até ~25 MB</p>
+          <p className="text-xs text-muted-foreground">
+            Apenas arquivos PDF · até ~25 MB
+          </p>
           <input
             ref={inputRef}
             type="file"
@@ -417,7 +532,13 @@ function UploadCard({
   );
 }
 
-function LoadingCard({ progress, file }: { progress: number; file: File | null }) {
+function LoadingCard({
+  progress,
+  file,
+}: {
+  progress: number;
+  file: File | null;
+}) {
   return (
     <Card className="mx-auto max-w-2xl shadow-sm">
       <CardContent className="space-y-5 p-8 text-center">
@@ -427,7 +548,8 @@ function LoadingCard({ progress, file }: { progress: number; file: File | null }
         <div>
           <div className="text-lg font-semibold">Analisando edital...</div>
           <p className="mt-1 text-sm text-muted-foreground">
-            Extraindo datas, requisitos, documentos e demais informações importantes.
+            Extraindo datas, requisitos, documentos e demais informações
+            importantes.
           </p>
         </div>
         <Progress value={progress} className="h-2" />
@@ -449,10 +571,17 @@ function ErrorCard({ onRetry }: { onRetry: () => void }) {
           <AlertTriangle className="h-7 w-7" />
         </div>
         <div>
-          <div className="text-lg font-semibold">Não foi possível analisar o edital</div>
-          <p className="mt-1 text-sm text-muted-foreground">Tente novamente ou envie outro arquivo PDF.</p>
+          <div className="text-lg font-semibold">
+            Não foi possível analisar o edital
+          </div>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Tente novamente ou envie outro arquivo PDF.
+          </p>
         </div>
-        <Button onClick={onRetry}><RotateCcw className="h-4 w-4" />Tentar novamente</Button>
+        <Button onClick={onRetry}>
+          <RotateCcw className="h-4 w-4" />
+          Tentar novamente
+        </Button>
       </CardContent>
     </Card>
   );
@@ -466,7 +595,10 @@ export function EditalApp() {
   const [error, setError] = useState<string | null>(null);
 
   const start = async (f: File) => {
-    if (f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) {
+    if (
+      f.type !== "application/pdf" &&
+      !f.name.toLowerCase().endsWith(".pdf")
+    ) {
       setError("Somente arquivos PDF são permitidos.");
       return;
     }
@@ -479,15 +611,11 @@ export function EditalApp() {
       setResult(data);
       setStatus("success");
     } catch (e) {
-       console.error(e);
+      console.error(e);
 
-  setError(
-    e instanceof Error
-      ? e.message
-      : "Erro ao processar o edital.",
-  );
+      setError(e instanceof Error ? e.message : "Erro ao processar o edital.");
 
-  setStatus("error");
+      setStatus("error");
     }
   };
 
@@ -497,7 +625,8 @@ export function EditalApp() {
     setProgress(0);
     setResult(null);
     setError(null);
-    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    if (typeof window !== "undefined")
+      window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -512,7 +641,8 @@ export function EditalApp() {
               Entenda qualquer edital em segundos
             </h1>
             <p className="mt-4 text-pretty text-base text-muted-foreground sm:text-lg">
-              Envie um PDF e receba apenas as informações realmente importantes para sua inscrição.
+              Envie um PDF e receba apenas as informações realmente importantes
+              para sua inscrição.
             </p>
           </div>
           <UploadCard onFile={start} error={error} />
@@ -523,7 +653,9 @@ export function EditalApp() {
 
       {status === "error" && <ErrorCard onRetry={reset} />}
 
-      {status === "success" && result && <ResultView data={result} file={file} onReset={reset} />}
+      {status === "success" && result && (
+        <ResultView data={result} file={file} onReset={reset} />
+      )}
     </section>
   );
 }
