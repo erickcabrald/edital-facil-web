@@ -1,5 +1,7 @@
 import handler, { createServerEntry } from "@tanstack/react-start/server-entry";
 
+import "./lib/error-capture";
+
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 
@@ -10,13 +12,17 @@ async function normalizeCatastrophicSsrResponse(
 
   const contentType = response.headers.get("content-type") ?? "";
 
-  if (!contentType.includes("application/json")) {
-    return response;
-  }
+  if (!contentType.includes("application/json")) return response;
 
   const body = await response.clone().text();
 
-  if (!isH3SwallowedErrorBody(body)) {
+  try {
+    const payload = JSON.parse(body);
+
+    if (payload.unhandled !== true || payload.message !== "HTTPError") {
+      return response;
+    }
+  } catch {
     return response;
   }
 
@@ -30,19 +36,6 @@ async function normalizeCatastrophicSsrResponse(
       "content-type": "text/html; charset=utf-8",
     },
   });
-}
-
-function isH3SwallowedErrorBody(body: string): boolean {
-  try {
-    const payload = JSON.parse(body) as {
-      unhandled?: unknown;
-      message?: unknown;
-    };
-
-    return payload.unhandled === true && payload.message === "HTTPError";
-  } catch {
-    return false;
-  }
 }
 
 export default createServerEntry({
